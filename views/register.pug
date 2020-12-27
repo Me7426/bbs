@@ -1,0 +1,85 @@
+doctype html
+html
+  head
+    title Simple BBS
+    link(rel="stylesheet" href="/common.css")
+    link(rel="stylesheet" href="/home-page2.css")
+    link(rel="stylesheet" href="/login.css")
+    link(rel="stylesheet" href="/bootstrap.min.css")
+    script(src="/jquery-3.4.1.min.js")
+
+  body(class="bg-light text-center")
+    nav(class="navbar navbar-expand-md fixed-top nvabar-dark bg-dark")
+      div(class="container")
+        a(class="navbar-brand" href="/")
+          h4="Simple BBS"
+
+    form(action="/register" method="post" enctype="multipart/form-data")
+      h3(class="mb-2 font-weight-normal") 注册
+      small(id="tip") &#8203;
+      input(
+        type="text"
+        name="name"
+        placeholder="用户名"
+        class="form-control"
+        required
+      )
+      input(
+        type="password"
+        name="password"
+        placeholder="密码"
+        class="form-control"
+        required
+      )
+      input(
+        type="email"
+        name="email"
+        placeholder="电子邮箱"
+        class="form-control"
+        required
+      )
+      div(class="custom-file my-1")
+        input(
+          type="file"
+          name="avatar"
+          accept="image/png, image/jpeg"
+          class="custom-file-input"
+        )
+        label(class="custom-file-label text-left text-secondary") 选择头像
+      button(type=submit class="btn btn-lg btn-block btn-primary mt-6") 注册
+      a(href="/login" class="d-block mb-5 mt-2") 已有帐号？
+      include footer.pug
+
+
+    script.
+      if (document.cookie.indexOf('user') !== -1) {
+        location.href = '/'
+      }
+
+      var nameInput = document.querySelector('input[name="name"]')
+      var tip = document.querySelector('#tip')
+
+      var querying = false // throttle
+      nameInput.oninput = function(e) {
+        if (!querying && this.value.trim()) {
+          querying = true
+          setTimeout(() => {
+            $.get('/username-conflict-check?name=' + this.value).then(result => {
+              console.log(result)
+              tip.textContent = result.msg
+              if (result.code === 0) {
+                tip.classList.add('text-success')
+                tip.classList.remove('text-danger')
+                nameInput.classList.add('is-valid')
+                nameInput.classList.remove('is-invalid')
+              } else {
+                tip.classList.add('text-danger')
+                tip.classList.remove('text-success')
+                nameInput.classList.add('is-invalid')
+                nameInput.classList.remove('is-valid')
+              }
+            })
+            querying = !querying
+          }, 1000)
+        }
+      }

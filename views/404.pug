@@ -1,0 +1,20 @@
+doctype html
+
+html
+  head
+    title 404 Not Found
+  body
+    p 您要找的页面不存在！
+    p 将在<span class="count-down">5</span>秒钟以后跳转回首页
+    script.
+      var countDown = 5
+      var countDownSpan = document.querySelector('.count-down')
+
+      setInterval(() => {
+        countDown--
+        countDownSpan.textContent = countDown
+      }, 1000)
+
+      setTimeout(() => {
+        location.href = '/'
+      }, 5000)

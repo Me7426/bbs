@@ -1,0 +1,14 @@
+div(class="my-3 p-3 bg-white rounded box-shadow")
+  h5(class="border-bottom border-gray pb-2 mb-0") 帖子
+  ul(class="lsit-group list-group-flush")
+    each post in posts
+      li(class="list-group-item")
+        div(class="media")
+          img(src=post.avatar alt=post.name width=64 height=64 class="mr-3")
+          div(class="media-body text-muted")
+            h5(class="mt-0")
+              a(class="text-primary" href=`/post/${post.id}`)
+                strong=post.title
+            |#{post.content}
+          if post.comment_count
+            span(class="badge badge-primary badge-pill align-self-center")=post.comment_count

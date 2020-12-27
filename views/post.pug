@@ -1,0 +1,53 @@
+include header.pug
+script(src="/jquery-3.4.1.min.js")
+
+div(class='my-3 p-4 bg-white rounded shadow-sm')
+  div(class="d-flex justify-content-between align-items-end border-bottom border-gray pb-2 mb-1")
+    h2= post.title
+    img(src=post.avatar height=64 width=64 class="rounded")
+  p #{post.content}
+
+div(class="my-3 p-3 bg-white rounded shadow-sm")
+  if (comments.length == 0)
+    p 帖子现在还没有回复哦，回复一下消灭零回复吧！
+  else
+    ul(class="comments list-group lsit-group-flush")
+      each comment in comments
+        li(class="list-group-item")
+          div(class="media text-muted pt-2")
+            img(src=comment.avatar width=64 height=64 class="rounded mr-2")
+            div(class="media-body")
+              p #{comment.content}
+            span= new Date(comment.createdAt).toLocaleString()
+          div(class="d-sm-flex justify-content-between align-items-end")
+            strong(class="d-block text-gray")
+              |@
+              a(href=`/user/${comment.userId}`)= comment.name
+            if (user && comment.userId == user.id)
+              a(href="#" class="del-comment" data-id=comment.id) 删除评论
+
+div(class="my-3 p-3 bg-white rounded shadow-sm")
+  if (user)
+    form(action="/comment" method="post" class="clearfix")
+      h6 添加一条新回复
+      input(type="hidden" value=post.id name="postId")
+      textarea(class="form-control my-2" name="content", cols="30", rows="10")
+      button(class="btn btn-primary my-3 mr-3 float-right") 提交回复
+  else
+    p 想要评论？<a href="/login">登陆</a> 或 <a href="register">注册</a>
+
+include footer.pug
+
+script.
+
+  $('ul.comments').on('click', '.del-comment', async e => {
+    var result = await $.get('/delete-comment/' + e.target.dataset.id)
+
+    //- console.log(result)
+    if (result.code == 0) {
+      $(e.target).closest('li').remove()
+    } else {
+      alert(result.msg)
+    }
+
+  })

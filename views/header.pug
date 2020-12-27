@@ -1,0 +1,33 @@
+doctype html
+
+html
+  head
+    title Simple BBS
+    link(rel="stylesheet" href="/common.css")
+    link(rel="stylesheet" href="/home-page2.css")
+    link(rel="stylesheet" href="/bootstrap.min.css")
+      
+  body.bg-light.container
+    nav(class="navbar navbar-expand-md fixed-top nvabar-dark bg-dark")
+      div(class="container")
+        a(class="navbar-brand" href="/")
+          h4="Simple BBS"
+
+        div(class="text-secondary")
+          if (user)
+            |欢迎，
+            span=user.name
+            |
+            |
+            a(href="/logout") 退出
+            |
+            |
+            a(href="/post") 发贴
+          else
+            |未登陆，
+            |
+            |
+            a(href="/login" class="btn btn-outline-success") 登陆
+            |
+            |
+            a(href="/register" class="btn btn-outline-primary") 注册

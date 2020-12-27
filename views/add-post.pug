@@ -1,0 +1,20 @@
+doctype html
+
+html
+  head
+    title 创建帖子 - BBS
+    link(rel="stylesheet", href="/common.css")
+    link(rel="stylesheet", href="/add-post-page.css")
+
+  body
+    include header.pug
+
+    form(action="/post" method="post")
+      div 标题：
+      input(type="text" name="title")
+      div 内容：
+      textarea(name="content", cols="30", rows="10")
+      div
+        button 发布帖子
+
+    include footer.pug
