@@ -23,6 +23,7 @@ dbPromise.then((value) => {
 
 app.locals.pretty = true;
 app.set("views", __dirname + "/views");
+app.set('trust proxy', 'loopback')
 
 app.use((req, _res, next) => {
   console.log(`[${req.ip}]`, req.method, req.url);
