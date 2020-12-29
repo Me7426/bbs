@@ -25,7 +25,7 @@ app.locals.pretty = true;
 app.set("views", __dirname + "/views");
 
 app.use((req, _res, next) => {
-  console.log(req.method, req.url);
+  console.log(`[${req.ip}]`, req.method, req.url);
   next();
 });
 
@@ -155,11 +155,12 @@ app
 
     console.log("收到发贴请求", post);
 
-    await db.run("INSERT INTO posts VALUES (?, ?, ?, ?)", [
+    await db.run("INSERT INTO posts VALUES (?, ?, ?, ?, ?)", [
       post.title,
       post.content,
       new Date().toISOString(),
       req.user.id,
+      0
     ]);
 
     post = await db.get(
@@ -228,12 +229,13 @@ app
   .post(uploader.single("avatar"), async (req, res) => {
     let user = req.body;
     let file = req.file;
+    let avatarOnlineUrl = '/uploads/default-avatar.png'
 
-    let targetName = file.path + "-" + file.originalname;
-
-    await fsp.rename(file.path, targetName);
-
-    let avatarOnlineUrl = "/uploads/" + path.basename(targetName);
+    if (file) {
+      let targetName = file.path + "-" + file.originalname;
+      await fsp.rename(file.path, targetName);
+      avatarOnlineUrl = "/uploads/" + path.basename(targetName);
+    }
 
     try {
       await db.run(`INSERT INTO users VALUES (?, ?, ?, ?)`, [
@@ -245,6 +247,7 @@ app
       res.render("register-result.pug", {
         result: "注册成功",
         code: 0,
+        user,
       });
     } catch (e) {
       res.render("register-result.pug", {

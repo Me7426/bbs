@@ -1,11 +1,12 @@
-extends basic-layout.pug
+include header.pug
 
 
 
 
-block content
-  p= result
+div(class="my-3 p-3 bg-white rounded shadow-sm")
+  h4= result
   if (code == 0)
+    div
     a(href="/login") 去登陆
   else
-    button(onclick="history.back()") 后退
+    button(class="btn btn-primary" onclick="history.back()") 后退
