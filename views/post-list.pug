@@ -4,7 +4,7 @@ div(class="my-3 p-3 bg-white rounded box-shadow")
     each post in posts
       li(class="list-group-item")
         div(class="media")
-          img(src=post.avatar alt=post.name width=64 height=64 class="mr-3")
+          img(src=post.avatar alt=post.name width=64 height=64 class="mr-3 rounded")
           div(class="media-body text-muted")
             h5(class="mt-0")
               a(class="text-primary" href=`/post/${post.id}`)
