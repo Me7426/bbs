@@ -15,6 +15,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "is_china_ip": "^1.0.1",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.11",
     "pug": "^3.0.0",

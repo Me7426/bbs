@@ -7,6 +7,7 @@ const path = require("path");
 const svgCaptcha = require("svg-captcha");
 const apiRouter = require("./bbs-api-router");
 const cors = require("cors");
+const isChina = require("is_china_ip")
 
 const uploader = multer({ dest: __dirname + "/uploads/" });
 
@@ -26,7 +27,7 @@ app.set("views", __dirname + "/views");
 app.set('trust proxy', 'loopback')
 
 app.use((req, _res, next) => {
-  console.log(`[${req.ip}]`, req.method, req.url);
+  console.log(`[${req.ip}${isChina(req.ip) ? "(China)" : ""}]`, req.method, req.url);
   next();
 });
 
